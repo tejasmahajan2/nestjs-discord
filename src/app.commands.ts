@@ -1,6 +1,6 @@
 
 import { Injectable } from '@nestjs/common';
-import { Context, TextCommand, TextCommandContext, Arguments, SlashCommand, SlashCommandContext, Options, TargetUser, UserCommand, UserCommandContext, MessageCommand, MessageCommandContext, TargetMessage, ButtonContext, Button } from 'necord';
+import { Context, TextCommand, TextCommandContext, Arguments, SlashCommand, SlashCommandContext, Options, TargetUser, UserCommand, UserCommandContext, MessageCommand, MessageCommandContext, TargetMessage, ButtonContext, Button, SelectedStrings, StringSelect, StringSelectContext, Modal, ModalContext } from 'necord';
 import { TextDto } from './dtos/text.dto';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Message, User } from 'discord.js';
 import { NestApplication } from '@nestjs/core';
@@ -110,6 +110,21 @@ export class AppCommands {
     await interaction.reply({
       content: 'Here is your button!',
       components: [row],
+    });
+  }
+
+  @StringSelect('SELECT_MENU')
+  public onSelectMenu(
+    @Context() [interaction]: StringSelectContext,
+    @SelectedStrings() values: string[],
+  ) {
+    return interaction.reply({ content: `You selected: ${values.join(', ')}` });
+  }
+
+  @Modal('pizza')
+  public onModal(@Context() [interaction]: ModalContext) {
+    return interaction.reply({
+      content: `Your fav pizza : ${interaction.fields.getTextInputValue('pizza')}`
     });
   }
 }

@@ -18,6 +18,11 @@ export class AppUpdate {
         this.logger.warn(message);
     }
 
+    @On('messageUpdate')
+    public onMessageUpdate(@Context() [message]: ContextOf<'messageUpdate'>) {
+        this.logger.warn(message);
+    }
+
     @On('messageCreate')
     public onMessageCreate(@Context() [message]: ContextOf<'messageCreate'>) {
         console.log(message.content);
